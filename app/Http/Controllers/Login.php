@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+
+class Login extends Controller
+{
+    public function registration(Request $request) : View {
+
+        $request->validate([
+            'email' => 'required|email|unique:users|max:320',
+            'password' => 'required|max:128',
+            'first_name' => 'required|max:128',
+            'last_name' => 'required|max:128',
+            'patronymic' => 'max:128',
+            'birthday' => 'date',
+            'phone' => 'max:11',
+        ]);
+
+        User::create($request->all());
+
+        return view('main');
+    }
+
+    public function login(Request $request): string {
+        $account = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if(!Auth::attempt($account)){
+            return "Логин или пароль не верный!";
+        }
+
+        return redirect('main');
+    }
+}
