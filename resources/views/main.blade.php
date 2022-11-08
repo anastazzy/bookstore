@@ -3,7 +3,6 @@
 @section('content')
 
 @csrf
-<div class="container">
     <div class="row">
 @foreach($items as $item)
     <div class="col-md-3">
@@ -20,5 +19,5 @@
     </div>
 @endforeach
     </div>
-</div>
 
+@stop
