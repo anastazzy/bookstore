@@ -18,24 +18,14 @@ use Illuminate\Http\Request;
  * @method static \Illuminate\Database\Eloquent\Builder|Role whereName($value)
  * @mixin \Eloquent
  */
-class Role extends Model
+class BookAuthor extends Model
 {
-//    public int $id;
-//    public string $name;
+    public int $id;
+    public string $name;
 
     public $timestamps = false;
 
     protected $fillable = [
         'name',
     ];
-
-    public function users(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(User::class);
-    }
-
-    public function permissions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    {
-        return $this->belongsToMany(Permission::class);
-    }
 }

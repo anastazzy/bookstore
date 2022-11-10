@@ -76,6 +76,7 @@ return new class extends Migration
             $table->date('sale_date');
             $table->date('receipt_date');
         });
+        //добавить таблицу заказ-книги
 
         Schema::create('books', function (Blueprint $table) {
             $table->id();
