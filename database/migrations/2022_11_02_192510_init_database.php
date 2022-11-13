@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Author;
 use App\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -77,12 +78,21 @@ return new class extends Migration
             $table->date('receipt_date');
         });
 
+        Schema::create('files', function (Blueprint $table) {
+            $table->id();
+            $table->string('path', 256);
+        });
+
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->integer('article_number')->unique();
             $table->string('name', 512);
             $table->string('description', 2048);
-            $table->string('picture_link', 256)->nullable();
+            $table->unsignedBigInteger('file_id');
+            $table->foreign('file_id')
+                ->references('id')
+                ->on('files')
+                ->cascadeOnDelete();
             $table->double('purchase_price');
             $table->double('sale_price');
         });
@@ -172,6 +182,13 @@ return new class extends Migration
             ['name' => 'покупатель'],
             ['name' => 'продавец'],
             ['name' => 'администратор']
+        ]);
+
+        Author::query()->insert([[
+            'first_name' => 'Булгаков',
+            'last_name' => 'Михаил',
+            'patronymic' => 'Афанасьевич'
+            ],
         ]);
     }
 

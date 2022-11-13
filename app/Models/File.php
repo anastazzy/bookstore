@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class Book extends Model
+class File extends Model
 {
 //    public int $id;
 //    public string $name;
@@ -14,11 +14,10 @@ class Book extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name',
-        'article_number',
-        'file_id',
-        'description',
-        'purchase_price',
-        'sale_price'
+        'path',
     ];
+
+    public function books(){
+        return$this->hasMany(Book::class);
+    }
 }

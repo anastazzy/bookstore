@@ -15,6 +15,7 @@
         </div>
     @endif
     <form class="w-50 p-3" method="POST">
+        @csrf
         <div class="form-group">
             <label>Фамилия</label>
             <input type="text" class="form-control" name="last_name" placeholder="Иванов">
@@ -30,17 +31,17 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label>Дата рождения</label>
-                <input type="datetime-local" name="birthday" class="form-control">
+                <input type="date-local" name="birthday" class="form-control">
             </div>
             <div class="form-group col-md-4">
                 <label>Номер телефона</label>
-                <input type="tel" name="password" class="form-control">
+                <input type="tel" name="phone" class="form-control">
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label>Электронная почта</label>
-                <input type="email" class="form-control" name="email"placeholder="мояпочта@mail.ru">
+                <input type="email" class="form-control" name="email" placeholder="мояпочта@mail.ru">
             </div>
             <div class="form-group col-md-6">
                 <label>Пароль</label>
@@ -51,3 +52,4 @@
     </form>
 </div>
 </body>
+@stop

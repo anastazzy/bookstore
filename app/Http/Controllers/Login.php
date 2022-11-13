@@ -9,8 +9,8 @@ use Illuminate\View\View;
 
 class Login extends Controller
 {
-    public function registration(Request $request) : View {
-
+    public function registration(Request $request) : \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    {
         $request->validate([
             'email' => 'required|email|unique:users|max:320',
             'password' => 'required|max:128',
@@ -23,7 +23,7 @@ class Login extends Controller
 
         User::create($request->all());
 
-        return view('main');
+        return redirect('main');
     }
 
     public function login(Request $request): string {

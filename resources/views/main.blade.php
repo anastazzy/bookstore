@@ -1,8 +1,7 @@
 @extends('layouts.default')
 
 @section('content')
-
-@csrf
+    @csrf
     <div class="row">
 @foreach($items as $item)
     <div class="col-md-3">
