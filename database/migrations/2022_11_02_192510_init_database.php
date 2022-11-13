@@ -76,21 +76,30 @@ return new class extends Migration
             $table->date('sale_date');
             $table->date('receipt_date');
         });
-        //добавить таблицу заказ-книги
 
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id')->default(1);
-            $table->foreign('order_id')
-                ->references('id')
-                ->on('orders')
-                ->cascadeOnDelete();
             $table->integer('article_number')->unique();
             $table->string('name', 512);
             $table->string('description', 2048);
             $table->string('picture_link', 256)->nullable();
             $table->double('purchase_price');
             $table->double('sale_price');
+        });
+
+        Schema::create('order_book', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('order_id');
+            $table->foreign('order_id')
+                ->references('id')
+                ->on('orders')
+                ->cascadeOnDelete();
+            $table->unsignedBigInteger('book_id');
+            $table->foreign('book_id')
+                ->references('id')
+                ->on('books')
+                ->cascadeOnDelete();
+            $table->integer('count');
         });
 
         Schema::create('genres', function (Blueprint $table) {

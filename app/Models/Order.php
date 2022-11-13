@@ -27,7 +27,7 @@ class Order extends Model
         'receipt_date'
     ];
 
-    public function statuses(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function statuses(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Status::class);
     }

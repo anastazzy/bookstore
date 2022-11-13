@@ -15,7 +15,6 @@ class Book extends Model
 
     protected $fillable = [
         'name',
-        'order_id',
         'article_number',
         'name',
         'description',
@@ -23,8 +22,4 @@ class Book extends Model
         'purchase_price',
         'sale_price'
     ];
-
-    public function orders(){
-
-    }
 }
