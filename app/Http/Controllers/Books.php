@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\BookAuthor;
 use App\Models\File;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -25,24 +26,16 @@ class Books extends Controller
             'sale_price' => 'required',
         ]);
 
-        $fileInDb = File::query()->create(['path' => $path]);
-        $book = $request->all();
-        $book['file_id'] = $fileInDb->id;
-        Book::query()->create($book);
+        $file = new File(['path' => $path]);
+        $file->save();
 
-        return redirect('main');
+        $book = new Book();
+        $book->fill($request->all());
+        $book->file_id = $file->id;
+        $book->save();
+
+        $book->authors()->sync([$request->author_id]);
+
+        return \Redirect::back();
     }
-//
-//    public function login(Request $request): string {
-//        $account = $request->validate([
-//            'email' => ['required', 'email'],
-//            'password' => ['required'],
-//        ]);
-//
-//        if(!Auth::attempt($account)){
-//            return "Логин или пароль не верный!";
-//        }
-//
-//        return redirect('main');
-//    }
 }

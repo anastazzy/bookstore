@@ -4,10 +4,10 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 
 class Book extends Model
 {
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -18,4 +18,12 @@ class Book extends Model
         'purchase_price',
         'sale_price'
     ];
+
+    public function file(){
+        return $this->belongsTo(File::class);
+    }
+
+    public function authors(){
+        return $this->belongsToMany(Author::class, 'book_author');
+    }
 }

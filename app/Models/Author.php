@@ -18,4 +18,8 @@ class Author extends Model
         'first_name',
         'patronymic',
     ];
+
+    public function books(){
+        return $this->belongsToMany(Book::class);
+    }
 }

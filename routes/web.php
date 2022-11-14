@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Authors;
+use App\Http\Controllers\Books;
 use App\Models\Book;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Login;
@@ -15,7 +17,12 @@ use App\Http\Controllers\Login;
 |
 */
 // Books
-Route::post('/book-service', [\App\Http\Controllers\Books::class, 'create'])
+//Route::post('/book-service', [\App\Http\Controllers\Books::class, 'create'])
+//    ->middleware('auth');
+
+Route::post('/book', [Books::class, 'create'])
+    ->middleware('auth');
+Route::post('/author', [Authors::class, 'create'])
     ->middleware('auth');
 
 Route::get('/book-service', function () {
