@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Book;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Login;
 
@@ -14,10 +15,11 @@ use App\Http\Controllers\Login;
 |
 */
 // Books
-Route::post('/book-service', [\App\Http\Controllers\Books::class, 'create'])->middleware('auth');
+Route::post('/book-service', [\App\Http\Controllers\Books::class, 'create'])
+    ->middleware('auth');
 
 Route::get('/book-service', function () {
-    return view('bookService', ["items" => array('1', '2', '3', '4', '5')]);
+    return view('bookService')->with('books', Book::all());
 })->middleware('auth');
 
 //

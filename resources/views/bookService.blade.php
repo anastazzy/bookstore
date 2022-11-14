@@ -12,15 +12,19 @@
     </form>
 </div>
     <div class="row">
-@foreach($items as $item)
+@foreach($books as $item)
         <div class="col-md-2">
             <div>
                 YOUR IMAGE HERE
             </div>
             <div class="card">
-                <img class="card-img-top" src="https://dictionary.cambridge.org/ru/images/thumb/shirt_noun_002_33400.jpg?version=5.0.273" alt="Card image cap">
+                @php
+                    $file = \App\Models\File::query()->find($item->file_id)
+                @endphp
+                {{$file->path}}
+                <img class="card-img-top" src="{{ Storage::url($file->path) }}" alt="Card image cap">
                 <div class="card-body">
-                    <p>{{$item}}</p>
+{{--                    <p>{{$item}}</p>--}}
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>

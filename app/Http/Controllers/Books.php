@@ -15,7 +15,7 @@ class Books extends Controller
     public function create(Request $request) : \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $file = $request->photo;
-        $path = Storage::disk('local')->putFile('images', $file);
+        $path = Storage::disk('public')->putFile('images', $file);
         $request->validate([
             'article_number' => 'required|int|unique:books',
             'name' => 'required|max:512',
