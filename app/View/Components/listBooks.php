@@ -6,14 +6,10 @@ use Illuminate\View\Component;
 
 class listBooks extends Component
 {
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $books;
+    public function __construct($books)
     {
-        //
+        $this->books = $books;
     }
 
     /**

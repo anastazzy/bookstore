@@ -31,7 +31,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label>Дата рождения</label>
-                <input type="date-local" name="birthday" class="form-control">
+                <input type="date" name="birthday" class="form-control">
             </div>
             <div class="form-group col-md-4">
                 <label>Номер телефона</label>

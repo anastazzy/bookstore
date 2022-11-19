@@ -23,7 +23,7 @@ class Login extends Controller
 
         User::create($request->all());
 
-        return redirect('main');
+        return redirect('books');
     }
 
     public function login(Request $request): string {
@@ -36,6 +36,6 @@ class Login extends Controller
             return "Логин или пароль не верный!";
         }
 
-        return redirect('main');
+        return redirect('books');
     }
 }

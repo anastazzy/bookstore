@@ -53,11 +53,17 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Цена закупки</label>
-                            <input type="number" class="form-control" name="purchase_price">
+                            <div class="input-group-append">
+                                <input type="number" class="form-control" name="purchase_price">
+                                <span class="input-group-text">рублей</span>
+                            </div>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Цена продажи</label>
-                            <input type="number"  class="form-control" name="sale_price">
+                            <div class="input-group-append">
+                                <input type="number"  class="form-control" name="sale_price">
+                                <span class="input-group-text">рублей</span>
+                            </div>
                         </div>
                     </div>
                     <input class="btn btn-primary" type="submit" name="Save" value="Сохранить">

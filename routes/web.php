@@ -1,5 +1,6 @@
 <?php
 
+use App\Basket;
 use App\Http\Controllers\Authors;
 use App\Http\Controllers\Books;
 use App\Models\Book;
@@ -16,31 +17,52 @@ use App\Http\Controllers\Login;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Books
-//Route::post('/book-service', [\App\Http\Controllers\Books::class, 'create'])
-//    ->middleware('auth');
+//получение конкретной книги по идентификатору
+Route::get('/book/{id}', function ($bookId){
+    $data = Book::query()
+        ->where('id', $bookId)
+        ->with('file')
+        ->with('authors')
+        ->firstOrFail();
+    $data->basket_count = Basket::getItemCount(Auth::id(), $data->id);
+    return view('detailed-book')->with('book', $data);
+})->middleware('auth');
 
+//обвновление корзины
+Route::post('/book/{id}', function ($bookId, \Illuminate\Http\Request $request){
+    Basket::updateItemCount(Auth::id() ,$bookId, $request['count']);
+    return redirect($request->url());
+})->middleware('auth');
+
+//создание книги
 Route::post('/book', [Books::class, 'create'])
     ->middleware('auth');
+
+//создание автора
 Route::post('/author', [Authors::class, 'create'])
     ->middleware('auth');
 
+//получение списка книг
 Route::get('/book-service', function () {
     return view('bookService')->with('books', Book::all());
 })->middleware('auth');
 
-//
-Route::get('/main', function () {
-    return view('main', ["items" => array('1', '2', '3', '4', '5')]);
+Route::get('/books', function () {
+    $data = Book::with('file')->with('authors')->get();
+    foreach ($data as $book) {
+        $book->basket_count = Basket::getItemCount(Auth::id(), $book->id);
+    }
+    return view('books')->with('books', $data);
 })->middleware('auth');
 
-//Login
+//регистрация
 Route::get('/register', function () {
     return view('register');
 });
 
 Route::post('/register', [Login::class, 'registration']);
 
+//вход в систему
 Route::post('/login', [Login::class, 'login']);
 
 Route::get('/login', function () {
