@@ -55,6 +55,13 @@ Route::get('/books', function () {
     return view('books')->with('books', $data);
 })->middleware('auth');
 
+Route::post('/books', function (\Illuminate\Http\Request $request){
+    $bookId = $request->all();
+    Basket::updateItemCount(Auth::id() ,$bookId['bookId'], $request['count']);
+    return redirect($request->url());
+})->middleware('auth');
+
+
 //регистрация
 Route::get('/register', function () {
     return view('register');
