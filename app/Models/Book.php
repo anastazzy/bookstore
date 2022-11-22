@@ -12,7 +12,6 @@ class Book extends Model
 
     protected $fillable = [
         'name',
-        'article_number',
         'file_id',
         'description',
         'purchase_price',
@@ -25,5 +24,9 @@ class Book extends Model
 
     public function authors(){
         return $this->belongsToMany(Author::class, 'book_author');
+    }
+
+    public function orders(){
+        return $this->belongsToMany(Order::class, 'order_book');
     }
 }

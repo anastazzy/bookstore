@@ -18,9 +18,8 @@ class Books extends Controller
         $file = $request->photo;
         $path = Storage::disk('public')->putFile('images', $file);
         $request->validate([
-            'article_number' => 'required|int|unique:books',
             'name' => 'required|max:512',
-            'author_id' => 'required|int',
+            'author_ids' => 'required|array',
             'description' => 'required|max:2048',
             'purchase_price' => 'required',
             'sale_price' => 'required',
@@ -33,8 +32,7 @@ class Books extends Controller
         $book->fill($request->all());
         $book->file_id = $file->id;
         $book->save();
-
-        $book->authors()->sync([$request->author_id]);
+        $book->authors()->sync($request->author_ids);
 
         return \Redirect::back();
     }

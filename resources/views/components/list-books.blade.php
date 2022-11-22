@@ -6,7 +6,7 @@
                      id="card"
                      onclick="window.location.href = '{{url('/book/' . $book->id)}}'">
                     <img class="card-img-top" width="500" height="280" src="{{ Storage::url($book->file->path) }}" alt="Card image cap">
-                    <div class="card-body">
+                    <div class="card-body text-center">
                         <h6 class="card-title">
                             {{ $book->name }}
                         </h6>
@@ -15,15 +15,11 @@
                                 {{ $author->first_name }} {{ mb_substr($author->last_name, 0, 1) }}. {{ mb_substr($author->patronymic, 0, 1) }}.
                             </p>
                         @endforeach
-                        <p class="card-text text-success"> {{ $book->sale_price }} рублей</p>
-{{--                        <button class="card-text text-info" value="$">--}}
-{{--                            {{ $book->sale_price }}--}}
-{{--                        </button>--}}
+                        <p class="card-text text-success"> {{ $book->sale_price }} ₽</p>
                         <div>
                             @php
                                 $count = \App\Basket::getItemCount(Auth::id(), $book->id)
                             @endphp
-                            {{--                В корзине <span> {{ $count }} </span> шт.--}}
                             <form method="POST">
                                 <div class="input-group mb-1">
                                     @csrf

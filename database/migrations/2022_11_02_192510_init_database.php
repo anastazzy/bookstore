@@ -68,14 +68,13 @@ return new class extends Migration
                 ->references('id')
                 ->on('users')
                 ->cascadeOnDelete();
-            $table->unsignedBigInteger('status_id');
+            $table->unsignedBigInteger('status_id')->default(1);
             $table->foreign('status_id')
                 ->references('id')
                 ->on('statuses')
                 ->cascadeOnDelete();
-            $table->date('placing_date');
+            $table->date('placing_date')->nullable();
             $table->date('sale_date');
-            $table->date('receipt_date');
         });
 
         Schema::create('files', function (Blueprint $table) {
@@ -85,7 +84,6 @@ return new class extends Migration
 
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->integer('article_number')->unique();
             $table->string('name', 512);
             $table->string('description', 2048);
             $table->unsignedBigInteger('file_id');
@@ -185,10 +183,21 @@ return new class extends Migration
         ]);
 
         Author::query()->insert([[
-            'first_name' => 'Булгаков',
-            'last_name' => 'Михаил',
-            'patronymic' => 'Афанасьевич'
+                'first_name' => 'Булгаков',
+                'last_name' => 'Михаил',
+                'patronymic' => 'Афанасьевич'
             ],
+            [
+                'first_name' => 'Достоевский',
+                'last_name' => 'Федор',
+                'patronymic' => 'Михайлович'
+            ],
+        ]);
+
+        \App\Models\Status::query()->insert([
+            ['name' => 'Оформлен'],
+            ['name' => 'Собран'],
+            ['name' => 'Оплачен']
         ]);
     }
 

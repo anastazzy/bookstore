@@ -17,6 +17,28 @@ use App\Http\Controllers\Login;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//корзина
+Route::get('/basket', function () {
+    $inputData = Basket::getItemIds(Auth::id());
+    $outputData = new \Illuminate\Support\Collection();
+    foreach (array_keys($inputData) as $bookId){
+        $count = $inputData[$bookId];
+
+        $book = Book::query()
+            ->where('id', $bookId)
+            ->with('file')
+            ->with('authors')
+            ->firstOrFail();
+        $book->count = $count;
+
+        $outputData->add($book);
+    }
+    return view('basket')->with('books', $outputData);
+})->middleware('auth');
+
+Route::post('/basket', [\App\Http\Controllers\Order::class, 'create'])
+    ->middleware('auth');
+
 //получение конкретной книги по идентификатору
 Route::get('/book/{id}', function ($bookId){
     $data = Book::query()
@@ -28,7 +50,7 @@ Route::get('/book/{id}', function ($bookId){
     return view('detailed-book')->with('book', $data);
 })->middleware('auth');
 
-//обвновление корзины
+//обновление корзины
 Route::post('/book/{id}', function ($bookId, \Illuminate\Http\Request $request){
     Basket::updateItemCount(Auth::id() ,$bookId, $request['count']);
     return redirect($request->url());

@@ -21,7 +21,6 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'status_id',
         'placing_date',
         'sale_date',
         'receipt_date'
@@ -30,5 +29,9 @@ class Order extends Model
     public function statuses(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Status::class);
+    }
+
+    public function books(){
+        return $this->belongsToMany(Book::class);
     }
 }

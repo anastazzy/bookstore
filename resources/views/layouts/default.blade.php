@@ -17,7 +17,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Каталог<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="books">Каталог<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Корзина</a>
@@ -28,14 +28,20 @@
                     <li class="nav-item">
                         <a class="nav-link" href="book-service">Управление</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Администратор</a>
-                    </li>
                 </ul>
             </div>
         </nav>
     </div>
 <div class="container">
+    @if ($errors->any())
+        <div class="alert alert-danger align-middle">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     @yield('content')
 </div>
 </body>

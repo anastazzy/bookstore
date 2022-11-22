@@ -10,6 +10,10 @@ class Basket {
         return $basket[$item_id];
     }
 
+    public static function getItemIds(int $user_id) : array {
+        return self::getBasket($user_id);
+    }
+
     private static function getBasketKey(int $user_id) : string {
         return "user:{$user_id}:basket";
     }

@@ -27,24 +27,24 @@
                             <label>Загрузить фото</label>
                             <input type="file" class="form-control-file" name="photo">
                         </div>
-                        <div class="form-group col-md-6">
-                            <label>Артикль</label>
-                            <input type="number" class="form-control" name="article_number">
-                        </div>
                     </div>
                     <div class="form-group">
                         <label>Название</label>
                         <input type="text" class="form-control" name="name">
                     </div>
                     <div class="form-group">
-                        <label>Автор</label>
-                        <select class="form-control" name="author_id">
-                            @foreach($authors as $author)
-                                <option value="{{$author->id}}">
-                                    {{$author->first_name}} {{$author->last_name}} {{$author->patronymic}}
-                                </option>
-                            @endforeach
-                        </select>
+                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                id="sampleDropdownMenu" data-toggle="dropdown">
+                            Выберите авторов
+                        </button>
+                        <div class="dropdown-menu">
+                        @foreach($authors as $author)
+                            <label>
+                                <input type="checkbox" name="author_ids[]" value="{{$author->id}}" />
+                                {{$author->first_name}} {{$author->last_name}} {{$author->patronymic}}
+                            </label>
+                        @endforeach
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Описание</label>
