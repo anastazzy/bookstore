@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Book extends Model
 {
@@ -28,5 +29,13 @@ class Book extends Model
 
     public function orders(){
         return $this->belongsToMany(Order::class, 'order_book');
+    }
+
+    public function warehouses(){
+        return $this->belongsToMany(Warehouse::class, 'book_warehouse')->withPivot('count');
+    }
+
+    public function genres(){
+        return $this->belongsToMany(Genre::class, 'book_genre');
     }
 }

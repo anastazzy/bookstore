@@ -12,8 +12,10 @@
 {{--        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>--}}
 {{--    </form>--}}
 </div>
+@php
+@endphp
     <div class="row p-2">
-        <x-list-books :books="$books"></x-list-books>
+        <x-list-books-for-service :books="$books"></x-list-books-for-service>
     </div>
     <div class="modal fade" id="modal-create-book" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
        <x-create-book></x-create-book>

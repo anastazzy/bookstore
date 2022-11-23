@@ -8,9 +8,6 @@ use Illuminate\Http\Request;
 
 class Warehouse extends Model
 {
-//    public int $id;
-//    public string $name;
-
     public $timestamps = false;
 
     protected $fillable = [
@@ -22,4 +19,8 @@ class Warehouse extends Model
         'building',
         'flat',
     ];
+
+    public function books(){
+        return $this->belongsToMany(Book::class);
+    }
 }

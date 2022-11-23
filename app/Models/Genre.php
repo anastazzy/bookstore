@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 
 class Genre extends Model
 {
-    public int $id;
-    public string $name;
-
     public $timestamps = false;
 
     protected $fillable = [
         'name',
     ];
+
+    public function books(){
+        return $this->belongsToMany(Book::class);
+    }
 }

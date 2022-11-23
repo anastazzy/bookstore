@@ -45,9 +45,22 @@ Route::get('/book/{id}', function ($bookId){
         ->where('id', $bookId)
         ->with('file')
         ->with('authors')
+        ->with('genres')
         ->firstOrFail();
     $data->basket_count = Basket::getItemCount(Auth::id(), $data->id);
     return view('detailed-book')->with('book', $data);
+})->middleware('auth');
+
+Route::get('/update-book/{id}', function ($bookId){
+    $data = Book::query()
+        ->where('id', $bookId)
+        ->with('file')
+        ->with('authors')
+        ->with('genres')
+        ->with('warehouses')
+        ->firstOrFail();
+    $data->basket_count = Basket::getItemCount(Auth::id(), $data->id);
+    return view('detailed-book-for-service')->with('book', $data);
 })->middleware('auth');
 
 //обновление корзины
@@ -66,8 +79,15 @@ Route::post('/author', [Authors::class, 'create'])
 
 //получение списка книг
 Route::get('/book-service', function () {
-    return view('bookService')->with('books', Book::all());
+   $data = Book::with('warehouses')->with('genres')->get();
+    return view('bookService')->with('books', $data);
 })->middleware('auth');
+
+Route::post('/book-service', [Books::class, 'delete'])
+    ->middleware('auth');
+
+Route::post('/book-service/update-book', [Books::class, 'update'])
+    ->middleware('auth');
 
 Route::get('/books', function () {
     $data = Book::with('file')->with('authors')->get();

@@ -37,25 +37,6 @@ return new class extends Migration
             $table->string('remember_token', 256)->nullable();
         });
 
-        Schema::create('permissions', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 128)->unique();
-        });
-
-        Schema::create('role_permission', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('role_id');
-            $table->foreign('role_id')
-                ->references('id')
-                ->on('roles')
-                ->cascadeOnDelete();
-            $table->unsignedBigInteger('permission_id');
-            $table->foreign('permission_id')
-                ->references('id')
-                ->on('permissions')
-                ->cascadeOnDelete();
-        });
-
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
             $table->string('name', 128)->unique();
@@ -198,6 +179,30 @@ return new class extends Migration
             ['name' => 'Оформлен'],
             ['name' => 'Собран'],
             ['name' => 'Оплачен']
+        ]);
+
+        \App\Models\Genre::query()->insert([
+            ['name' => 'Ужасы/Триллер'],
+            ['name' => 'Фантастика'],
+            ['name' => 'Классика'],
+            ['name' => 'Триллер'],
+            ['name' => 'Боевик'],
+            ['name' => 'Детектив'],
+            ['name' => 'Роман'],
+            ['name' => 'Фэнтези'],
+            ['name' => 'Нехудожественная литература'],
+        ]);
+
+        \App\Models\Warehouse::query()->insert([
+            [
+                'country' => 'Россия',
+                'region' => 'Санкт-Петербург',
+                'city' => 'Санкт-Петербург',
+                'street' => 'Суворовский',
+                'house' => '22',
+                'building' => '4',
+                'flat' => '8',
+            ],
         ]);
     }
 
