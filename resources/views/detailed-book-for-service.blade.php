@@ -2,18 +2,22 @@
 
 @section('content')
     <div class="container">
-        <div class="row m-3 align-items-center">
+        <form class="row m-3 align-items-center">
             <div class="col-6 col-md-4 align-self-start">
                 <picture class="rounded mx-auto d-block">
                     <img height="300" width="220" src="{{ Storage::url($book->file->path) }}">
                 </picture>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Загрузить дргуое фото</label>
+                        <input type="file" class="form-control-file" name="photo">
+                    </div>
+                </div>
             </div>
             <div class="col-12 col-md-8">
                 <div class="card  mb-3">
-                        <div class="card-header border-success">
-                        <h4 class="card-title text-center">
-                            {{$book->name}}
-                        </h4>
+                    <div class="card-header border-success">
+                        <input type="text" class="form-control card-title text-center" value="{{$book->name}}" name="name">
                     </div>
                     <div class="card-body row">
                         <div class="col-md-8">
@@ -23,6 +27,7 @@
                                     {{$author->first_name}} {{$author->last_name}} {{$author->patronymic}}
                                 </h6>
                             @endforeach
+
                             Жанры:
                             @foreach($book->genres as $genre)
                                 <h7 class="text-info">
@@ -57,7 +62,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
         <div class="row m-3 align-items-center">
             <div class="card-body">
                 <h5 class="card-title text-center">

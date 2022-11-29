@@ -45,3 +45,10 @@
     @yield('content')
 </div>
 </body>
+
+<style>
+    .has-required .required:after {
+        content:"*";
+        color:red;
+    }
+</style>

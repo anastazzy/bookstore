@@ -18,7 +18,7 @@ class Login extends Controller
             'last_name' => 'required|max:128',
             'patronymic' => 'max:128',
             'birthday' => 'date',
-            'phone' => 'max:11',
+            'phone' => 'required|max:11|unique:users',
         ]);
 
         User::create($request->all());

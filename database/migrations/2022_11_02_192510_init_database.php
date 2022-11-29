@@ -34,7 +34,6 @@ return new class extends Migration
             $table->string('phone', 11)->unique();
             $table->string('password', 128);
             $table->string('email', 320)->unique();
-            $table->string('remember_token', 256)->nullable();
         });
 
         Schema::create('statuses', function (Blueprint $table) {

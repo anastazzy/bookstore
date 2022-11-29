@@ -17,15 +17,15 @@
                 </div>
             @endif
             <div class="modal-body">
-                <form class="w-60 p-3" action="{{url('/author')}}" method="POST" enctype="multipart/form-data">
+                <form class="w-60 p-3 has-required" action="{{url('/author')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label>Фамилия</label>
-                        <input type="text" class="form-control" name="first_name">
+                        <label class="required">Фамилия</label>
+                        <input required type="text" class="form-control" name="first_name">
                     </div>
                     <div class="form-group">
-                        <label>Имя</label>
-                        <input type="text" class="form-control" name="last_name">
+                        <label class="required">Имя</label>
+                        <input required type="text" class="form-control" name="last_name">
                     </div>
                     <div class="form-group">
                         <label>Отчество</label>
