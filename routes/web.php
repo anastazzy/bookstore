@@ -3,7 +3,10 @@
 use App\Basket;
 use App\Http\Controllers\Authors;
 use App\Http\Controllers\Books;
+use App\Models\Author;
 use App\Models\Book;
+use App\Models\Genre;
+use App\Models\Warehouse;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Login;
 
@@ -17,6 +20,13 @@ use App\Http\Controllers\Login;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/orders', function () {
+  return view('login');
+});
+
+
+
 Route::get('/success-order/{orderId}', function ($orderId) {
   return view('success-order')->with('orderId', $orderId);
 })->middleware('auth');
@@ -72,27 +82,38 @@ Route::get('/book/{id}', function ($bookId){
     ->firstOrFail();
   $allCount = 0;
   foreach ($data->warehouses as $warehouse){
-    $allCount += $warehouse->pivot->count;/////////////////////
+    $allCount += $warehouse->pivot->count;
   }
   $data->warehousesCount = $allCount;
   $data->basket_count = Basket::getItemCount(Auth::id(), $data->id);
   return view('detailed-book')->with('book', $data);
 })->middleware('auth');
 
-Route::get('/update-book/{id}', function ($bookId){
-    $data = Book::query()
-        ->where('id', $bookId)
-        ->with('file')
-        ->with('authors')
-        ->with('genres')
-        ->with('warehouses')
-        ->firstOrFail();
+Route::get('book-service/update-book/{id}', function ($bookId){
+  $data = Book::query()
+    ->where('id', $bookId)
+    ->with('file')
+    ->with('authors')
+    ->with('genres')
+    ->with('warehouses')
+    ->firstOrFail();
+  $allCount = 0;
+  foreach ($data->warehouses as $warehouse){
+    $allCount += $warehouse->pivot->count;
+  }
+  $data->warehousesCount = $allCount;
 
-    $data->basket_count = Basket::getItemCount(Auth::id(), $data->id);
-    return view('detailed-book-for-service')->with('book', $data);
+  return view('update-book')
+    ->with('book', $data)
+    ->with('authors', Author::query()->get())
+    ->with('warehouses', Warehouse::query()->get())
+    ->with('genres', Genre::query()->get());
 })->middleware('auth');
 
-//обновление корзины
+Route::post('book-service/update-book/{id}', [Books::class, 'update'])
+  ->middleware('auth');
+
+//обновить количество товара в корзине
 Route::post('/book/{id}', function ($bookId, \Illuminate\Http\Request $request){
     Basket::updateItemCount(Auth::id() ,$bookId, $request['count']);
     return redirect($request->url());

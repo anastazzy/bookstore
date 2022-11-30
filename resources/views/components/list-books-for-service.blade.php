@@ -3,8 +3,7 @@
         @foreach($books as $book)
             <div class="card-group m-1">
                 <div class="card"
-                     id="card"
-                     onclick="window.location.href = '{{url('/update-book/' . $book->id)}}'">
+                     id="card">
                     <img class="card-img-top" width="500" height="280" src="{{ Storage::url($book->file->path) }}" alt="Card image cap">
                     <div class="card-body text-center">
                         <h6 class="card-title">
@@ -29,11 +28,11 @@
                     </div>
                     <div class="card-footer">
                         <div class="row">
-                            <form method="POST" action="{{url('/book-service/update-book')}}">
+                            <a href="{{url('/book-service/update-book/' . $book->id)}}">
                                 @csrf
                                 <button class="btn btn-outline-info small" type="submit">Изменить</button>
                                 <input type="hidden" name="id" value="{{$book->id}}">
-                            </form>
+                            </a>
                             <form method="POST" action="{{url('/book-service')}}">
                                 @csrf
                                 <button class="btn btn-outline-danger small" type="submit">Удалить</button>
@@ -46,8 +45,3 @@
         @endforeach
     </div>
 </div>
-<style>
-    .card:hover {
-        outline: 1px solid #6c757d;
-    }
-</style>
