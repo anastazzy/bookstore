@@ -6,8 +6,10 @@ use App\Basket;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\BookAuthor;
+use App\Models\BookWarehouse;
 use App\Models\File;
 use App\Models\User;
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -36,9 +38,23 @@ class Order extends Controller
 
         $book->count = $count;
 
+        $warehouse = Warehouse::query()->firstOrFail();
+        $bookOnWarehouse = BookWarehouse::query()
+          ->where('warehouse_id', $warehouse->id)
+          ->where('book_id', $bookId)
+          ->firstOrFail();
+
+        $bookOnWarehouse->count -= $count;
+
+        if ($bookOnWarehouse->count < 0){
+          throw new \Exception("Извините, что-то пошло не так");
+        }
+
         $order->save();
         $order->books()->attach([$bookId], ['count' => $count]);
+        $bookOnWarehouse->save();
       }
+
 
       Basket::clear($userId);
 

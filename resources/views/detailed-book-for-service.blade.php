@@ -27,7 +27,6 @@
                                     {{$author->first_name}} {{$author->last_name}} {{$author->patronymic}}
                                 </h6>
                             @endforeach
-
                             Жанры:
                             @foreach($book->genres as $genre)
                                 <h7 class="text-info">

@@ -42,7 +42,7 @@
             Остаток на складе: {{$book->warehousesCount}}
           </h7>
         </div>
-        <div class="col-md-5 centered">
+        <div class="col-md-5">
           <form method="POST" action="{{url('/basket/update-count/' . $book->id)}}">
             @csrf
             <div class="input-group mb-3">
@@ -55,22 +55,39 @@
               </div>
             </div>
           </form>
+          <form method="POST" action="{{url('/basket/delete/' . $book->id)}}">
+            @csrf
+            <div class="input-group mb-3">
+              <div class="input-group-append">
+                <button class="btn btn-outline-danger" type="submit">Удалить товар</button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
       @php
       $sum += $book->sale_price * $book->count
       @endphp
       @endforeach
-      <form class="row m-3" method="POST">
+    <div class="row m-3">
+      <label>
+        Стоимость заказа: {{$sum}}
+      </label>
+      <form  method="POST">
         @csrf
-        <label>
-          Стоимость заказа: {{$sum}}
-        </label>
         <button class="btn btn-outline-success my-2 my-sm-0 " name="ProcessOrder" type="submit">
           Оформить заказ
         </button>
       </form>
-     </div>
+
+      <form method="POST" action="{{url('/basket/clear')}}">
+        @csrf
+        <button class="btn btn-outline-danger my-2 my-sm-0 " name="ClearBasket" type="submit">
+          Очистить корзину
+        </button>
+      </form>
+    </div>
+  </div>
   @endif
 @stop
 

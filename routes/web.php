@@ -46,6 +46,16 @@ Route::get('/basket', function () {
 Route::post('/basket', [\App\Http\Controllers\Order::class, 'create'])
     ->middleware('auth');
 
+Route::post('/basket/clear', function (){
+  Basket::clear(Auth::id());
+  return redirect()->back();})
+  ->middleware('auth');
+
+Route::post('/basket/delete/{id}',function ($bookId){
+  Basket::deleteItemId(Auth::id(), $bookId);
+  return redirect()->back();
+})->middleware('auth');
+
 Route::post('/basket/update-count/{id}',function ($bookId, \Illuminate\Http\Request $request){
     Basket::updateItemCount(Auth::id() ,$bookId, $request['count']);
     return redirect()->back();

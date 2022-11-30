@@ -19,6 +19,8 @@ class BookWarehouse extends Model
         'count',
     ];
 
+    protected $table = "book_warehouse";
+
     public function books(){
         return$this->hasMany(Book::class);
     }
