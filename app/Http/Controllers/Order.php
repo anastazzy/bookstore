@@ -18,27 +18,30 @@ class Order extends Controller
 {
     public function create(): \Illuminate\Http\RedirectResponse
     {
-        $userId = Auth::id();
-        $data = Basket::getItemIds($userId);
+      $userId = Auth::id();
+      $data = Basket::getItemIds($userId);
 
-        foreach (array_keys($data) as $bookId){
-            $count = $data[$bookId];
+      $books = Book::query()
+        ->whereIn('id', array_keys($data))
+        ->with('file')
+        ->with('authors')
+        ->get();
+      $order = new \App\Models\Order();
+      $order->sale_date = Date::now();
+      $order->user_id = $userId;
 
-            $book = Book::query()
-                ->where('id', $bookId)
-                ->with('file')
-                ->with('authors')
-                ->firstOrFail();
-            $book->count = $count;
+      foreach ($books as $book){
+        $bookId = $book->id;
+        $count = $data[$bookId];
 
-            $order = new \App\Models\Order();
+        $book->count = $count;
 
-            $order->sale_date = Date::now();
-            $order->user_id = $userId;
-            $order->save();
-            $order->books()->sync(['id' => $bookId]);
-        }
+        $order->save();
+        $order->books()->attach([$bookId], ['count' => $count]);
+      }
 
-        return \Redirect::back();
+      Basket::clear($userId);
+
+      return redirect('success-order/' . $order->id);
     }
 }

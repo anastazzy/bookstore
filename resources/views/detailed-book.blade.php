@@ -30,13 +30,16 @@
                                 </h7>
                             @endforeach
                         </div>
-                        <div class="col-md-2 text-center text-success align-self-center">
+                        <div class="col-md-4 text-center text-success align-self-center">
                             <strong class="text-success">
-                                {{ $book->sale_price }} ₽
+                              {{ $book->sale_price }} ₽ <br>
                             </strong>
+                          <h7 class="text-danger">
+                            Осталось: {{$book->warehousesCount}} шт.
+                          </h7>
                         </div>
                     </div>
-                    <div class="card-footer bg-transparent ">
+                    <div class="card-footer bg-transparent">
                         <div>
                             @php
                                 $count = \App\Basket::getItemCount(Auth::id(), $book->id)
@@ -47,7 +50,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">В корзине</span>
                                     </div>
-                                    <input type="number" name="count" min="0" value="{{$count}}" class="form-control" />
+                                    <input type="number" name="count" min="0" max="{{$book->warehousesCount}}" value="{{$count}}" class="form-control" />
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="submit">Сохранить</button>
                                     </div>

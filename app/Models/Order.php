@@ -8,9 +8,6 @@ use Illuminate\Http\Request;
 
 class Order extends Model
 {
-//    public int $id;
-//    public string $name;
-
     public $timestamps = false;
 
     protected $casts = [
@@ -26,12 +23,11 @@ class Order extends Model
         'receipt_date'
     ];
 
-    public function statuses(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
+    public function statuses(): \Illuminate\Database\Eloquent\Relations\HasMany {
         return $this->hasMany(Status::class);
     }
 
     public function books(){
-        return $this->belongsToMany(Book::class);
+        return $this->belongsToMany(Book::class, 'order_book');
     }
 }

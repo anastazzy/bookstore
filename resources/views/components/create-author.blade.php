@@ -17,7 +17,7 @@
                 </div>
             @endif
             <div class="modal-body">
-                <form class="w-60 p-3 has-required" action="{{url('/author')}}" method="POST" enctype="multipart/form-data">
+                <form class="w-60 p-3 has-required" action="{{url('/author')}}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label class="required">Фамилия</label>

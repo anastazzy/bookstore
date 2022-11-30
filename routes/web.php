@@ -17,38 +17,56 @@ use App\Http\Controllers\Login;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/success-order/{orderId}', function ($orderId) {
+  return view('success-order')->with('orderId', $orderId);
+})->middleware('auth');
+
 //корзина
 Route::get('/basket', function () {
-    $inputData = Basket::getItemIds(Auth::id());
-    $outputData = new \Illuminate\Support\Collection();
-    foreach (array_keys($inputData) as $bookId){
-        $count = $inputData[$bookId];
+  $inputData = Basket::getItemIds(Auth::id());
 
-        $book = Book::query()
-            ->where('id', $bookId)
-            ->with('file')
-            ->with('authors')
-            ->firstOrFail();
-        $book->count = $count;
-
-        $outputData->add($book);
+  $books = Book::query()
+    ->whereIn('id', array_keys($inputData))
+    ->with('file')
+    ->with('authors')
+    ->with('warehouses:id')
+    ->get();
+  foreach ($books as $book){
+    $allCount = 0;
+    $count = $inputData[$book->id];
+    $book->count = $count;
+    foreach ($book->warehouses as $warehouse){
+      $allCount += $warehouse->pivot->count;/////////////////////
     }
-    return view('basket')->with('books', $outputData);
+    $book->warehousesCount = $allCount;
+  }
+  return view('basket')->with('books', $books);
 })->middleware('auth');
 
 Route::post('/basket', [\App\Http\Controllers\Order::class, 'create'])
     ->middleware('auth');
 
+Route::post('/basket/update-count/{id}',function ($bookId, \Illuminate\Http\Request $request){
+    Basket::updateItemCount(Auth::id() ,$bookId, $request['count']);
+    return redirect()->back();
+})->middleware('auth');
+
 //получение конкретной книги по идентификатору
 Route::get('/book/{id}', function ($bookId){
-    $data = Book::query()
-        ->where('id', $bookId)
-        ->with('file')
-        ->with('authors')
-        ->with('genres')
-        ->firstOrFail();
-    $data->basket_count = Basket::getItemCount(Auth::id(), $data->id);
-    return view('detailed-book')->with('book', $data);
+  $data = Book::query()
+    ->where('id', $bookId)
+    ->with('file')
+    ->with('authors')
+    ->with('genres')
+    ->with('warehouses:id')
+    ->firstOrFail();
+  $allCount = 0;
+  foreach ($data->warehouses as $warehouse){
+    $allCount += $warehouse->pivot->count;/////////////////////
+  }
+  $data->warehousesCount = $allCount;
+  $data->basket_count = Basket::getItemCount(Auth::id(), $data->id);
+  return view('detailed-book')->with('book', $data);
 })->middleware('auth');
 
 Route::get('/update-book/{id}', function ($bookId){
@@ -59,6 +77,7 @@ Route::get('/update-book/{id}', function ($bookId){
         ->with('genres')
         ->with('warehouses')
         ->firstOrFail();
+
     $data->basket_count = Basket::getItemCount(Auth::id(), $data->id);
     return view('detailed-book-for-service')->with('book', $data);
 })->middleware('auth');
@@ -90,11 +109,19 @@ Route::post('/book-service/update-book', [Books::class, 'update'])
     ->middleware('auth');
 
 Route::get('/books', function () {
-    $data = Book::with('file')->with('authors')->get();
-    foreach ($data as $book) {
-        $book->basket_count = Basket::getItemCount(Auth::id(), $book->id);
+  $data = Book::with('file')
+    ->with('authors')
+    ->with('warehouses:id')
+    ->get();
+  foreach ($data as $book) {
+    $book->basket_count = Basket::getItemCount(Auth::id(), $book->id);
+    $allCount = 0;
+    foreach ($book->warehouses as $warehouse){
+      $allCount += $warehouse->pivot->count;
     }
-    return view('books')->with('books', $data);
+    $book->warehousesCount = $allCount;
+  }
+  return view('books')->with('books', $data);
 })->middleware('auth');
 
 Route::post('/books', function (\Illuminate\Http\Request $request){
