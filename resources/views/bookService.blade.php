@@ -6,13 +6,10 @@
 <div class="bg-light justify-content-around row border border-secondary p-2">
     <button data-toggle="modal" data-target="#modal-create-book" class="btn btn-outline-success my-2 my-sm-0" type="submit">Добавить книгу</button>
     <button data-toggle="modal" data-target="#modal-create-author" class="btn btn-outline-success my-2 my-sm-0" type="submit">Добавить автора</button>
-    <button href="/orders" class="btn btn-outline-info my-2 my-sm-0" type="submit">Управление заказами</button>
-{{--    <form class="form-inline">--}}
-{{--        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">--}}
-{{--        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>--}}
-{{--    </form>--}}
+    <button onclick="location.href='orders'" class="btn btn-outline-info my-2 my-sm-0" type="submit">Управление заказами</button>
 </div>
 @php
+    $user = Auth::user();
 @endphp
     <div class="row p-2">
         <x-list-books-for-service :books="$books"></x-list-books-for-service>

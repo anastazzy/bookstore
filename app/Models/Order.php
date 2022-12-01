@@ -23,11 +23,11 @@ class Order extends Model
         'receipt_date'
     ];
 
-    public function statuses(): \Illuminate\Database\Eloquent\Relations\HasMany {
-        return $this->hasMany(Status::class);
+    public function statuses() {
+        return $this->hasOne(Status::class, 'status_id');
     }
 
     public function books(){
-        return $this->belongsToMany(Book::class, 'order_book');
+        return $this->belongsToMany(Book::class, 'order_book')->withPivot('count');
     }
 }

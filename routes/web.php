@@ -22,8 +22,13 @@ use App\Http\Controllers\Login;
 */
 
 Route::get('/orders', function () {
-  return view('login');
-});
+  $orders = \App\Models\Order::query()
+    ->with('books')
+    ->leftJoin('statuses', 'statuses.id', '=', 'orders.status_id')// только 1 книга из-за этого
+    ->get();
+  return view('list-orders')
+    ->with('orders', $orders);
+})->middleware('auth');
 
 
 
@@ -46,7 +51,7 @@ Route::get('/basket', function () {
     $count = $inputData[$book->id];
     $book->count = $count;
     foreach ($book->warehouses as $warehouse){
-      $allCount += $warehouse->pivot->count;/////////////////////
+      $allCount += $warehouse->pivot->count;
     }
     $book->warehousesCount = $allCount;
   }
