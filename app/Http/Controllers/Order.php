@@ -60,4 +60,12 @@ class Order extends Controller
 
       return redirect('success-order/' . $order->id);
     }
+
+    public function updateStatus(Request $request){
+      $order = \App\Models\Order::query()->where('id', $request['order_id'])->firstOrFail();
+      $order->status_id = $request['status_id'];
+      $order->save();
+
+      return redirect()->back();
+    }
 }

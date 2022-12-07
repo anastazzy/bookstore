@@ -68,8 +68,9 @@ return new class extends Migration
             $table->string('description', 2048);
             $table->unsignedBigInteger('file_id');
             $table->foreign('file_id')
-                ->references('id')
-                ->on('files');
+              ->references('id')
+              ->on('files')
+              ->cascadeOnDelete();
             $table->double('purchase_price');
             $table->double('sale_price');
         });

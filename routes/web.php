@@ -3,9 +3,11 @@
 use App\Basket;
 use App\Http\Controllers\Authors;
 use App\Http\Controllers\Books;
+use App\Http\Controllers\Order;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\Genre;
+use App\Models\Status;
 use App\Models\Warehouse;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Login;
@@ -21,25 +23,36 @@ use App\Http\Controllers\Login;
 |
 */
 
-Route::get('/orders', function () {
-  $orders = \App\Models\Order::query()
+// получение списка заказов
+Route::get('/orders', function (\Illuminate\Http\Request  $request) {
+  $query = \App\Models\Order::query()
     ->with('books')
-    ->leftJoin('statuses', 'statuses.id', '=', 'orders.status_id')// только 1 книга из-за этого
-    ->get();
+    ->with('status')
+    ->with('user');
+
+  if ($request['status']){
+    $query = $query
+      ->where('status_id', $request['status']);
+  }
+  $orders = $query->get();
+
   return view('list-orders')
-    ->with('orders', $orders);
+    ->with('orders', $orders)
+    ->with('currentStatus', $request['status'])
+    ->with('statuses', Status::query()->get()->prepend(new Status(['id' => 0, 'name' => 'Статус'])));
 })->middleware('auth');
 
+Route::post('/orders/edit-status', [Order::class, 'updateStatus'])
+->middleware('auth');
 
-
+// отображение при успешном заказе
 Route::get('/success-order/{orderId}', function ($orderId) {
   return view('success-order')->with('orderId', $orderId);
 })->middleware('auth');
 
-//корзина
+// получить корзину с книгами
 Route::get('/basket', function () {
   $inputData = Basket::getItemIds(Auth::id());
-
   $books = Book::query()
     ->whereIn('id', array_keys($inputData))
     ->with('file')
@@ -58,19 +71,23 @@ Route::get('/basket', function () {
   return view('basket')->with('books', $books);
 })->middleware('auth');
 
+// оформление заказа
 Route::post('/basket', [\App\Http\Controllers\Order::class, 'create'])
     ->middleware('auth');
 
+// очистка корзины
 Route::post('/basket/clear', function (){
   Basket::clear(Auth::id());
   return redirect()->back();})
   ->middleware('auth');
 
+// удаление конкретного товара из корзины
 Route::post('/basket/delete/{id}',function ($bookId){
   Basket::deleteItemId(Auth::id(), $bookId);
   return redirect()->back();
 })->middleware('auth');
 
+// обновление количества конкретного товара
 Route::post('/basket/update-count/{id}',function ($bookId, \Illuminate\Http\Request $request){
     Basket::updateItemCount(Auth::id() ,$bookId, $request['count']);
     return redirect()->back();
@@ -94,6 +111,7 @@ Route::get('/book/{id}', function ($bookId){
   return view('detailed-book')->with('book', $data);
 })->middleware('auth');
 
+//
 Route::get('book-service/update-book/{id}', function ($bookId){
   $data = Book::query()
     ->where('id', $bookId)
