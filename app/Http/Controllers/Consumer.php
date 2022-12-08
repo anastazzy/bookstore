@@ -34,6 +34,6 @@ class Consumer extends Controller
           }
         }
       }
-      return \view('list-order-consumer ')->with('profit', $profit);
+      return \redirect('orders/my')->with('profit', $profit);
     }
 }

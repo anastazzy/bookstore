@@ -38,6 +38,7 @@ Route::get('/orders/my', function (\Illuminate\Http\Request  $request) {
     ->with('orders', $orders)
     ->with('currentStatus', $request['status'])
     ->with('user', Auth::user())
+    ->with('profit')
     ->with('statuses', Status::query()->get()->prepend(new Status(['id' => 0, 'name' => 'Статус'])));
 })->middleware('auth');
 

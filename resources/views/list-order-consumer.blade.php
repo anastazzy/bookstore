@@ -48,12 +48,12 @@
         <th scope="col">Дата оформления/оплаты</th>
         <th scope="col">Стоимость</th>
         <th scope="col">Состав</th>
-        <select onchange="onStatusChange(arguments[0])" class="form-select" aria-label="Default select example">
-          @foreach($statuses as $status)
-            <option @if($currentStatus == $status->id) selected @endif value="{{$status->id}}">{{$status->name}}</option>
-          @endforeach
-        </select>
         <th scope="col">
+          <select onchange="onStatusChange(arguments[0])" class="form-select" aria-label="Default select example">
+            @foreach($statuses as $status)
+              <option @if($currentStatus == $status->id) selected @endif value="{{$status->id}}">{{$status->name}}</option>
+            @endforeach
+          </select>
         </th>
       </tr>
     </thead>
