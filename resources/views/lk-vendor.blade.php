@@ -2,6 +2,9 @@
 
 @section('content')
 <div class="form container-width">
+  <div class="form-row form-group col-md-12">
+    Добрый день, {{Auth::user()->first_name}}! Сегодня {{date('d.m.Y',strtotime(date('d-m-Y')))}}
+  </div>
     <form method="POST" action="{{url('/profit')}}">
       @csrf
           <div class="form-row form-group col-md-12">

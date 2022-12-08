@@ -23,13 +23,16 @@
                         <a class="nav-link" href="{{url('basket')}}">Корзина</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Личный кабинет</a>
+                        <a class="nav-link" href="{{url('orders/my')}}">Личный кабинет</a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{url('book-service')}}">Продавец</a>
                     </li>
                   <li class="nav-item active">
                     <a class="nav-link" href="{{url('lk-vendor')}}">Владелец</a>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{url('logout')}}">Выйти из системы</a>
                   </li>
                 </ul>
             </div>

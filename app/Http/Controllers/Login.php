@@ -37,4 +37,10 @@ class Login extends Controller
 
         return redirect('books');
     }
+
+  public function logout(Request $request): string {
+    Auth::logout();
+
+    return redirect('/');
+  }
 }

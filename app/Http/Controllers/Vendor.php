@@ -27,7 +27,7 @@ class Vendor extends Controller
 
         foreach ($orders as $order){
           foreach($order->books as $book){
-            $profit += $book->sale_price * $book->pivot->count;
+            $profit += ($book->sale_price - $book->purchase_price) * $book->pivot->count;
           }
         }
       }
@@ -48,10 +48,10 @@ class Vendor extends Controller
       foreach ($orders as $order){
         foreach($order->books as $book){
           if (!array_key_exists($book->id, $dictionary)){
-            $dictionary[$book->id] = ['profit' => $book->sale_price * $book->pivot->count];
+            $dictionary[$book->id] = ['profit' => ($book->sale_price - $book->purchase_price) * $book->pivot->count];
           } else{
             $sum = $dictionary[$book->id]['profit'];
-            $dictionary[$book->id]['profit'] = $sum + $book->sale_price * $book->pivot->count;
+            $dictionary[$book->id]['profit'] = $sum + ($book->sale_price - $book->purchase_price) * $book->pivot->count;
           }
         }
       }

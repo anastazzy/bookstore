@@ -23,6 +23,24 @@ use App\Http\Controllers\Login;
 |
 */
 
+Route::get('/orders/my', function (\Illuminate\Http\Request  $request) {
+  $query = \App\Models\Order::query()
+    ->where('user_id', Auth::id())
+    ->with('books')
+    ->with('status');
+
+  if ($request['status']){
+    $query = $query
+      ->where('status_id', $request['status']);
+  }
+  $orders = $query->get();
+  return view('list-order-consumer')
+    ->with('orders', $orders)
+    ->with('currentStatus', $request['status'])
+    ->with('user', Auth::user())
+    ->with('statuses', Status::query()->get()->prepend(new Status(['id' => 0, 'name' => 'Статус'])));
+})->middleware('auth');
+
 // получение списка заказов
 Route::get('/orders', function (\Illuminate\Http\Request  $request) {
   $query = \App\Models\Order::query()
@@ -54,6 +72,9 @@ Route::get('/lk-vendor', function () {
 })->middleware('auth');
 
 Route::post('/profit', [\App\Http\Controllers\Vendor::class, 'getProfit'])
+  ->middleware('auth');
+
+Route::post('/sum-by-period', [\App\Http\Controllers\Consumer::class, 'getSum'])
   ->middleware('auth');
 
 Route::post('/rating', [\App\Http\Controllers\Vendor::class, 'getRating'])
@@ -212,6 +233,7 @@ Route::post('/login', [Login::class, 'login']);
 Route::get('/login', function () {
     return view('login');
 });
+Route::get('/logout', [Login::class, 'logout']);
 
 //Index
 Route::get('/', function () {
