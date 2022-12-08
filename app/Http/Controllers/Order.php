@@ -68,4 +68,12 @@ class Order extends Controller
 
       return redirect()->back();
     }
+
+    public function updatePlacingDate(Request $request){
+      $order = \App\Models\Order::query()->where('id', $request['order_id'])->firstOrFail();
+      $order->placing_date = $request['placing-date'];
+      $order->save();
+
+      return redirect()->back();
+    }
 }

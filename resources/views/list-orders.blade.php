@@ -27,6 +27,16 @@
         <td>
           @if($order->placing_date)
             {{date_format($order->placing_date, 'd.m.Y')}}
+          @else
+              <form method="POST" id="setterDate" action="{{url('/orders/added-placing-date/')}}">
+              @csrf
+              <div class="form-group">
+                <div class="form-group">
+                  <input type="date" onchange="setDate()" id="date" name="placing-date" class="form-control">
+                </div>
+                <input type="hidden" name="order_id" value="{{$order->id}}" />
+              </div>
+              </form>
           @endif
         </td>
         <td>
@@ -60,7 +70,6 @@
                     @endif
                 @endforeach
               </div>
-
               <input type="hidden" name="order_id" value="{{$order->id}}" />
             </div>
           </form>
@@ -79,7 +88,9 @@
     url.searchParams.set("status", ev.target.value)
     window.location.replace(url);
   }
-  const updateStatus = function(ev){
 
+  const setDate = function () {
+        $('#setterDate').submit()
   }
+
 </script>

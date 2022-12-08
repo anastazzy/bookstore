@@ -28,6 +28,9 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="{{url('book-service')}}">Продавец</a>
                     </li>
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{url('lk-vendor')}}">Владелец</a>
+                  </li>
                 </ul>
             </div>
         </nav>

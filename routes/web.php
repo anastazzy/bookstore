@@ -45,6 +45,20 @@ Route::get('/orders', function (\Illuminate\Http\Request  $request) {
 Route::post('/orders/edit-status', [Order::class, 'updateStatus'])
 ->middleware('auth');
 
+Route::post('/orders/added-placing-date/', [Order::class, 'updatePlacingDate'])
+->middleware('auth');
+
+//
+Route::get('/lk-vendor', function () {
+  return view('lk-vendor');
+})->middleware('auth');
+
+Route::post('/profit', [\App\Http\Controllers\Vendor::class, 'getProfit'])
+  ->middleware('auth');
+
+Route::post('/rating', [\App\Http\Controllers\Vendor::class, 'getRating'])
+  ->middleware('auth');
+
 // отображение при успешном заказе
 Route::get('/success-order/{orderId}', function ($orderId) {
   return view('success-order')->with('orderId', $orderId);
