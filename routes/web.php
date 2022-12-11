@@ -53,6 +53,12 @@ Route::get('/orders', function (\Illuminate\Http\Request  $request) {
     $query = $query
       ->where('status_id', $request['status']);
   }
+
+  if ($request['id']){
+    $query = $query
+      ->where('id', $request['id']);
+  }
+
   $orders = $query->get();
 
   return view('list-orders')
@@ -62,9 +68,6 @@ Route::get('/orders', function (\Illuminate\Http\Request  $request) {
 })->middleware('auth');
 
 Route::post('/orders/edit-status', [Order::class, 'updateStatus'])
-->middleware('auth');
-
-Route::post('/orders/added-placing-date/', [Order::class, 'updatePlacingDate'])
 ->middleware('auth');
 
 //
@@ -186,8 +189,23 @@ Route::post('/author', [Authors::class, 'create'])
     ->middleware('auth');
 
 //получение списка книг
-Route::get('/book-service', function () {
-   $data = Book::with('warehouses')->with('genres')->get();
+Route::get('/book-service', function (\Illuminate\Http\Request  $request) {
+  $query = Book::with('warehouses')->with('authors')->with('genres');
+
+  if ($request['search']){
+    $search = $request['search'];
+    $query = $query->where(function ($query) use ($search){
+      return $query->where('name', 'like', "%$search")
+        ->orwhere('name', 'like', "$search%")
+        ->orwhere('name', 'like', "%$search%")
+        ->orwhere('description', 'like', "%$search%")
+        ->orwhere('description', 'like', "$search%")
+        ->orwhere('description', 'like', "%$search")
+        ->orwhere('description', 'like', "$search");
+    });
+  }
+
+  $data = $query->get();
     return view('bookService')->with('books', $data);
 })->middleware('auth');
 

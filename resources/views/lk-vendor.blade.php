@@ -71,7 +71,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Название</th>
                 <th scope="col">Идентификатор</th>
-                <th scope="col">Сумма</th>
+                <th scope="col">Размер прибыли</th>
               </tr>
             </thead>
             <tbody>
