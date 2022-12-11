@@ -63,16 +63,17 @@ class Order extends Controller
 
     public function updateStatus(Request $request){
       $order = \App\Models\Order::query()->where('id', $request['order_id'])->firstOrFail();
-      $order->status_id = $request['status_id'];
-      $order->save();
+      $newStatus = $request['status_id'];
+      $currentState = $order->status_id;
+      if ($newStatus > $currentState){
+        $order->status_id = $newStatus;
+        if ($newStatus == 3){
+          $now =  date_create()->format('Y-m-d');
+          $order->placing_date = $now;
+        }
 
-      return redirect()->back();
-    }
-
-    public function updatePlacingDate(Request $request){
-      $order = \App\Models\Order::query()->where('id', $request['order_id'])->firstOrFail();
-      $order->placing_date = $request['placing-date'];
-      $order->save();
+        $order->save();
+      }
 
       return redirect()->back();
     }
