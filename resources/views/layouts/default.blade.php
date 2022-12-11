@@ -16,24 +16,33 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
+                  @if(Auth::check())
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{url('books')}}">Каталог</a>
+                      <a class="nav-link" href="{{url('books')}}">Каталог</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{url('basket')}}">Корзина</a>
+                      <a class="nav-link" href="{{url('basket')}}">Корзина</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{url('orders/my')}}">Личный кабинет</a>
+                      <a class="nav-link" href="{{url('orders/my')}}">Мои заказы</a>
                     </li>
-                    <li class="nav-item active">
+                    @php
+                      $roleId = Auth::user()->role_id;
+                    @endphp
+                    @if($roleId >1)
+                      <li class="nav-item active">
                         <a class="nav-link" href="{{url('book-service')}}">Продавец</a>
+                      </li>
+                      @if($roleId == 3)
+                        <li class="nav-item active">
+                          <a class="nav-link" href="{{url('lk-vendor')}}">Владелец</a>
+                        </li>
+                      @endif
+                    @endif
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{{url('logout')}}">Выйти из системы</a>
                     </li>
-                  <li class="nav-item active">
-                    <a class="nav-link" href="{{url('lk-vendor')}}">Владелец</a>
-                  </li>
-                  <li class="nav-item active">
-                    <a class="nav-link" href="{{url('logout')}}">Выйти из системы</a>
-                  </li>
+                  @endif
                 </ul>
             </div>
         </nav>
