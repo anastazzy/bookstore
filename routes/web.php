@@ -215,6 +215,7 @@ Route::post('/book-service', [Books::class, 'delete'])
 Route::post('/book-service/update-book', [Books::class, 'update'])
     ->middleware('auth');
 
+//получить каталог для авторизованного пользователя
 Route::get('/books', function () {
   $data = Book::with('file')
     ->with('authors')
