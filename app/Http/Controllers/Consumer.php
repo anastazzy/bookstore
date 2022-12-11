@@ -6,6 +6,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\BookAuthor;
 use App\Models\File;
+use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,23 @@ class Consumer extends Controller
           }
         }
       }
-      return \redirect('orders/my')->with('profit', $profit);
+
+      $query = \App\Models\Order::query()
+        ->where('user_id', Auth::id())
+        ->with('books')
+        ->with('status');
+
+      if ($request['status']){
+        $query = $query
+          ->where('status_id', $request['status']);
+      }
+      $allorders = $query->get();
+
+      return \view('list-order-consumer')
+        ->with('profit', $profit)
+        ->with('orders', $allorders)
+        ->with('currentStatus', $request['status'])
+        ->with('user', Auth::user())
+        ->with('statuses', Status::query()->get()->prepend(new Status(['id' => 0, 'name' => 'Статус'])));;
     }
 }

@@ -75,12 +75,11 @@ Route::get('/lk-vendor', function () {
 Route::post('/profit', [\App\Http\Controllers\Vendor::class, 'getProfit'])
   ->middleware('auth');
 
-Route::post('/sum-by-period', [\App\Http\Controllers\Consumer::class, 'getSum'])
-  ->middleware('auth');
-
 Route::post('/rating', [\App\Http\Controllers\Vendor::class, 'getRating'])
   ->middleware('auth');
 
+Route::post('/sum-by-period', [\App\Http\Controllers\Consumer::class, 'getSum'])
+  ->middleware('auth');
 // отображение при успешном заказе
 Route::get('/success-order/{orderId}', function ($orderId) {
   return view('success-order')->with('orderId', $orderId);

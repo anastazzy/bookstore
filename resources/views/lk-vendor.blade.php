@@ -71,6 +71,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Название</th>
                 <th scope="col">Идентификатор</th>
+                <th scope="col">Сумма</th>
               </tr>
             </thead>
             <tbody>
@@ -86,6 +87,7 @@
                 <th scope="row">{{$index}}</th>
                 <td>{{$book->name}}</td>
                 <td>{{$key}}</td>
+                <td>{{$val['profit']}}</td>
               </tr>
             @endforeach
             </tbody>
