@@ -49,7 +49,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label class="required">Введите пароль</label>
-                <input required type="password"  class="form-control" name="password" placeholder="пароль123">
+                <input required type="password" minlength="6" class="form-control" name="password" placeholder="пароль123">
                 <div class="invalid-feedback">
                     Введите пароль
                 </div>

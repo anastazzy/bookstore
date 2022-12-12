@@ -3,14 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
-use App\Models\Book;
-use App\Models\BookAuthor;
-use App\Models\File;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
 
 class Authors extends Controller
 {

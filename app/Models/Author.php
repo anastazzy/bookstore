@@ -26,8 +26,6 @@ use Illuminate\Http\Request;
  */
 class Author extends Model
 {
-//    public int $id;
-//    public string $name;
 
     public $timestamps = false;
 

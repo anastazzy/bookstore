@@ -28,9 +28,6 @@ use Illuminate\Http\Request;
  */
 class BookWarehouse extends Model
 {
-//    public int $id;
-//    public string $name;
-
     public $timestamps = false;
 
     protected $fillable = [

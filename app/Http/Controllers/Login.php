@@ -12,7 +12,7 @@ class Login extends Controller
     {
         $request->validate([
             'email' => 'required|email|unique:users|max:320',
-            'password' => 'required|max:128',
+            'password' => 'required|max:128|min:5',
             'first_name' => 'required|max:128',
             'last_name' => 'required|max:128',
             'patronymic' => 'max:128',

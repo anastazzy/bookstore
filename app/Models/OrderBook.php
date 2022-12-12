@@ -20,9 +20,6 @@ use Illuminate\Http\Request;
  */
 class OrderBook extends Model
 {
-//    public int $id;
-//    public string $name;
-
     public $timestamps = false;
 
     protected $casts = [

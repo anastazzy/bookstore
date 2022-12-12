@@ -22,7 +22,7 @@ use App\Http\Controllers\Login;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// получаить список заказов текущего пользователя
 Route::get('/orders/my', function (\Illuminate\Http\Request  $request) {
   $query = \App\Models\Order::query()
     ->where('user_id', Auth::id())
@@ -42,7 +42,7 @@ Route::get('/orders/my', function (\Illuminate\Http\Request  $request) {
     ->with('statuses', Status::query()->get()->prepend(new Status(['id' => 0, 'name' => 'Статус'])));
 })->middleware('auth');
 
-// получение списка заказов
+// получение списка заказов от продавца
 Route::get('/orders', function (\Illuminate\Http\Request  $request) {
   $query = \App\Models\Order::query()
     ->with('books')
@@ -67,22 +67,27 @@ Route::get('/orders', function (\Illuminate\Http\Request  $request) {
     ->with('statuses', Status::query()->get()->prepend(new Status(['id' => 0, 'name' => 'Статус'])));
 })->middleware('auth');
 
+// изменить статус заказа
 Route::post('/orders/edit-status', [Order::class, 'updateStatus'])
 ->middleware('auth');
 
-//
+// получить представление кабинета владельца
 Route::get('/lk-vendor', function () {
   return view('lk-vendor');
 })->middleware('auth');
 
+// получить прибыль за период
 Route::post('/profit', [\App\Http\Controllers\Vendor::class, 'getProfit'])
   ->middleware('auth');
 
+// получить рейтинг товаров за период
 Route::post('/rating', [\App\Http\Controllers\Vendor::class, 'getRating'])
   ->middleware('auth');
 
+// получить сумму заказов за период от покупателя
 Route::post('/sum-by-period', [\App\Http\Controllers\Consumer::class, 'getSum'])
   ->middleware('auth');
+
 // отображение при успешном заказе
 Route::get('/success-order/{orderId}', function ($orderId) {
   return view('success-order')->with('orderId', $orderId);
@@ -149,7 +154,7 @@ Route::get('/book/{id}', function ($bookId){
   return view('detailed-book')->with('book', $data);
 })->middleware('auth');
 
-//
+// получить книгу по идентификатору
 Route::get('book-service/update-book/{id}', function ($bookId){
   $data = Book::query()
     ->where('id', $bookId)
@@ -171,6 +176,7 @@ Route::get('book-service/update-book/{id}', function ($bookId){
     ->with('genres', Genre::query()->get());
 })->middleware('auth');
 
+// обновить информацию книги по идентификатору
 Route::post('book-service/update-book/{id}', [Books::class, 'update'])
   ->middleware('auth');
 
@@ -209,9 +215,11 @@ Route::get('/book-service', function (\Illuminate\Http\Request  $request) {
     return view('bookService')->with('books', $data);
 })->middleware('auth');
 
+// удалить книгу по идентификатору
 Route::post('/book-service', [Books::class, 'delete'])
     ->middleware('auth');
 
+// обновить книгу по идентификатору
 Route::post('/book-service/update-book', [Books::class, 'update'])
     ->middleware('auth');
 
@@ -232,29 +240,33 @@ Route::get('/books', function () {
   return view('books')->with('books', $data);
 })->middleware('auth');
 
+// увеличить количество книги по идентификатору в корзине
 Route::post('/books', function (\Illuminate\Http\Request $request){
     $bookId = $request->all();
     Basket::updateItemCount(Auth::id() ,$bookId['bookId'], $request['count']);
     return redirect($request->url());
 })->middleware('auth');
 
-
-//регистрация
+// получить представление регистрации
 Route::get('/register', function () {
     return view('register');
 });
 
+// отправить данные для регистрации
 Route::post('/register', [Login::class, 'registration']);
 
-//вход в систему
+// отправить данные для входа в систему
 Route::post('/login', [Login::class, 'login']);
 
+// получить предсатввление для входа в систему
 Route::get('/login', function () {
     return view('login');
 });
+
+// выйти из системы
 Route::get('/logout', [Login::class, 'logout']);
 
-//Index
+// первая старница проекта
 Route::get('/', function () {
     return view('index');
 });
